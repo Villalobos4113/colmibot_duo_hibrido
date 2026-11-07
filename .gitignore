@@ -1,0 +1,14 @@
+# Salidas de colcon (workspace en repo/)
+/build/
+/install/
+/log/
+
+# Python y pruebas
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Evidencia local: nunca se versiona
+*.sqlite3
+*.sqlite3-journal
+*.db

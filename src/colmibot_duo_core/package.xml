@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>colmibot_duo_core</name>
+  <version>0.1.0</version>
+  <description>Núcleo local de COLMIBOT DUO: misión simbólica con estados explícitos, evidencia en SQLite y adaptador ROS 2 mínimo. Solo datos sintéticos, sin actuación física.</description>
+  <maintainer email="pendiente@example.invalid">Equipo COLMIBOT DUO (mantenedor por confirmar)</maintainer>
+  <license>TODO: licencia pendiente de decisión del equipo</license>
+
+  <depend>rclpy</depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

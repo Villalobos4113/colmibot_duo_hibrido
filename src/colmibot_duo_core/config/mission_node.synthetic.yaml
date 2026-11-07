@@ -1,0 +1,8 @@
+# Parámetros de ejemplo para mission_node. Estaciones simbólicas SINTÉTICAS.
+# db_dir no se fija aquí a propósito: debe apuntar fuera del código fuente
+# (por ejemplo: --ros-args -p db_dir:=$HOME/.local/share/colmibot_duo_demo).
+mission_node:
+  ros__parameters:
+    robot_id: "A"
+    origin: "synthetic"
+    stations: ["S1", "S2", "S3"]
