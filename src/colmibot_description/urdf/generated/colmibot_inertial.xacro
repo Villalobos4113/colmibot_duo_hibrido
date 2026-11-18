@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- GENERADO por tools/compute_inertial.py. No editar a mano: editar inertia/masas.csv y
+     volver a correr el script. Marco de ROS: origen en base_link (centro del eje de las llantas). -->
+<!-- Robot: 2296 g. Origen de las masas: cad=55 componentes -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="base_inertial">
+    <inertial>
+      <origin xyz="-0.00672385 -0.00022214 0.0213195" rpy="0 0 0"/>
+      <mass value="2.25741"/>
+      <inertia ixx="0.00675856" ixy="2.13689e-05" ixz="-0.000966576"
+               iyy="0.00705147" iyz="3.66283e-06" izz="0.00777712"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="wheel_left_inertial">
+    <inertial>
+      <origin xyz="-5.29078e-08 0.00169416 3.0834e-06" rpy="0 0 0"/>
+      <mass value="0.0193581"/>
+      <inertia ixx="4.67554e-06" ixy="-1.8664e-12" ixz="2.57785e-12"
+               iyy="9.11427e-06" iyz="1.08796e-10" izz="4.67539e-06"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="wheel_right_inertial">
+    <inertial>
+      <origin xyz="6.88206e-15 -0.00169416 3.0838e-06" rpy="0 0 0"/>
+      <mass value="0.0193581"/>
+      <inertia ixx="4.67554e-06" ixy="4.54209e-16" ixz="2.11737e-18"
+               iyy="9.11427e-06" iyz="-1.08812e-10" izz="4.67539e-06"/>
+    </inertial>
+  </xacro:macro>
+
+</robot>

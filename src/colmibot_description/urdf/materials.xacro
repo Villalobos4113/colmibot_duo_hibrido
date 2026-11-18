@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+  Colores por grupo de piezas. Los nombres coinciden con los grupos de
+  tools/prepare_meshes.py. Ajustarlos para que se parezcan al robot fisico.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <material name="impreso_3d"><color rgba="0.78 0.80 0.84 1.0"/></material>
+  <material name="placas_laser"><color rgba="0.90 0.78 0.60 1.0"/></material>
+  <material name="electronica"><color rgba="0.30 0.70 0.45 1.0"/></material>
+  <material name="bateria"><color rgba="0.45 0.62 0.92 1.0"/></material>
+  <material name="motores"><color rgba="0.55 0.68 0.90 1.0"/></material>
+  <material name="ruedas_locas"><color rgba="0.80 0.80 0.82 1.0"/></material>
+  <material name="camara"><color rgba="0.40 0.42 0.46 1.0"/></material>
+  <material name="rueda"><color rgba="0.45 0.47 0.50 1.0"/></material>
+  <material name="otros"><color rgba="0.75 0.75 0.75 1.0"/></material>
+  <material name="sensor"><color rgba="0.95 0.45 0.40 1.0"/></material>
+
+</robot>

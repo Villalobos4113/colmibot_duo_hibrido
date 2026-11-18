@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Rueda motriz: link + joint continuo sobre el eje Y -->
+  <xacro:macro name="drive_wheel" params="side x y z use_meshes">
+    <link name="wheel_${side}_link">
+      <visual>
+        <xacro:if value="${use_meshes}">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="package://colmibot_description/meshes/wheel_${side}.stl"/>
+          </geometry>
+        </xacro:if>
+        <xacro:unless value="${use_meshes}">
+          <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+          <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+          </geometry>
+        </xacro:unless>
+        <material name="rueda"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <xacro:call macro="wheel_${side}_inertial"/>
+    </link>
+
+    <joint name="wheel_${side}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="wheel_${side}_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Frame de sensor (link sin geometria + joint fijo) -->
+  <xacro:macro name="sensor_frame" params="name parent x y z roll:=0 pitch:=0 yaw:=0">
+    <link name="${name}"/>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+      <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
+    </joint>
+  </xacro:macro>
+
+</robot>

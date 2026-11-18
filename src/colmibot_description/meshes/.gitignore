@@ -1,0 +1,6 @@
+# Mallas CAD derivadas del ensamble del curso (vía Víctor Manuel Jiménez González, SHA 985b6b8).
+# Quedan locales: falta documentar el permiso para redistribuirlas. Para recuperarlas, ver ../SOURCE.md.
+# Solo SHA256SUMS y este archivo pueden versionarse.
+*
+!.gitignore
+!SHA256SUMS

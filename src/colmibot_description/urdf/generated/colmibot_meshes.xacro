@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!-- GENERADO por tools/prepare_meshes.py. No editar a mano: volver a correr el script. -->
+<!-- Opciones: units=mm up=y forward=-z grid=0.2 mm -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="wheel_radius" value="0.03000"/>
+  <xacro:property name="wheel_width" value="0.01200"/>
+  <xacro:property name="wheel_left_x" value="0.00000"/>
+  <xacro:property name="wheel_left_y" value="0.08705"/>
+  <xacro:property name="wheel_left_z" value="-0.00000"/>
+  <xacro:property name="wheel_right_x" value="0.00000"/>
+  <xacro:property name="wheel_right_y" value="-0.08705"/>
+  <xacro:property name="wheel_right_z" value="0.00000"/>
+  <xacro:property name="chassis_length" value="0.20000"/>
+  <xacro:property name="chassis_width" value="0.20000"/>
+  <xacro:property name="chassis_height" value="0.16718"/>
+  <xacro:property name="chassis_z" value="0.05361"/>
+  <xacro:property name="camera_x" value="0.05289"/>
+  <xacro:property name="camera_y" value="0.00005"/>
+  <xacro:property name="camera_z" value="0.12140"/>
+  <xacro:property name="imu_x" value="0.05947"/>
+  <xacro:property name="imu_y" value="0.00059"/>
+  <xacro:property name="imu_z" value="0.03856"/>
+  <xacro:property name="tof_left_x" value="0.07921"/>
+  <xacro:property name="tof_left_y" value="0.04922"/>
+  <xacro:property name="tof_left_z" value="0.05900"/>
+  <xacro:property name="tof_center_x" value="0.09275"/>
+  <xacro:property name="tof_center_y" value="0.00155"/>
+  <xacro:property name="tof_center_z" value="0.05900"/>
+  <xacro:property name="tof_right_x" value="0.08248"/>
+  <xacro:property name="tof_right_y" value="-0.04498"/>
+  <xacro:property name="tof_right_z" value="0.05900"/>
+
+  <xacro:macro name="body_mesh_links" params="parent">
+    <link name="vis_camara">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/camara.stl"/></geometry>
+        <material name="camara"/>
+      </visual>
+    </link>
+    <joint name="vis_camara_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_camara"/>
+    </joint>
+    <link name="vis_electronica">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/electronica.stl"/></geometry>
+        <material name="electronica"/>
+      </visual>
+    </link>
+    <joint name="vis_electronica_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_electronica"/>
+    </joint>
+    <link name="vis_impreso_3d">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/impreso_3d.stl"/></geometry>
+        <material name="impreso_3d"/>
+      </visual>
+    </link>
+    <joint name="vis_impreso_3d_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_impreso_3d"/>
+    </joint>
+    <link name="vis_motores">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/motores.stl"/></geometry>
+        <material name="motores"/>
+      </visual>
+    </link>
+    <joint name="vis_motores_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_motores"/>
+    </joint>
+    <link name="vis_placas_laser">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/placas_laser.stl"/></geometry>
+        <material name="placas_laser"/>
+      </visual>
+    </link>
+    <joint name="vis_placas_laser_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_placas_laser"/>
+    </joint>
+    <link name="vis_ruedas_locas">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://colmibot_description/meshes/ruedas_locas.stl"/></geometry>
+        <material name="ruedas_locas"/>
+      </visual>
+    </link>
+    <joint name="vis_ruedas_locas_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_ruedas_locas"/>
+    </joint>
+    <!-- caja en lugar de: esp32 (BOX_RULES) -->
+    <link name="vis_esp32">
+      <visual>
+        <origin xyz="0.00968 -0.04597 0.05252" rpy="0 0 0"/>
+        <geometry><box size="0.07183 0.05418 0.02026"/></geometry>
+        <material name="electronica"/>
+      </visual>
+    </link>
+    <joint name="vis_esp32_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_esp32"/>
+    </joint>
+    <!-- caja en lugar de: xl4015 (BOX_RULES) -->
+    <link name="vis_xl4015">
+      <visual>
+        <origin xyz="-0.06850 -0.01000 0.04765" rpy="0 0 0"/>
+        <geometry><box size="0.03886 0.06731 0.01585"/></geometry>
+        <material name="electronica"/>
+      </visual>
+    </link>
+    <joint name="vis_xl4015_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="vis_xl4015"/>
+    </joint>
+  </xacro:macro>
+
+</robot>
