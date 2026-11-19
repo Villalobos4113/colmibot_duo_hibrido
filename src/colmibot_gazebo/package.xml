@@ -3,19 +3,25 @@
 <package format="3">
   <name>colmibot_gazebo</name>
   <version>0.1.0</version>
-  <description>Bringup estacionario de un COLMIBOT en Gazebo Harmonic y RViz 2: spawn, /clock y /joint_states de Gazebo a ROS, cámara opcional. Sin DiffDrive, cmd_vel, joystick ni hardware. Patrones de Mingyar2/colmibot_ws@0aed972; ver README.md.</description>
+  <description>Un COLMIBOT en Gazebo Harmonic y RViz 2. sim_stationary: spawn, /clock y /joint_states de Gazebo a ROS, cámara opcional, sin movimiento (C-006). sim_motion: DiffDrive solo simulado con /colmibot_sim/cmd_vel, /odom y odom->base_footprint, más una sonda finita de prueba (C-007). Sin joystick, teleop, firmware ni hardware. Patrones de Mingyar2/colmibot_ws@0aed972; ver README.md.</description>
   <maintainer email="pendiente@example.invalid">Equipo COLMIBOT DUO (mantenedor por confirmar)</maintainer>
   <license>TODO: licencia pendiente de decisión del equipo (ver README.md)</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>colmibot_description</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>gz_msgs_vendor</exec_depend>
+  <exec_depend>gz_transport_vendor</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>rclpy</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
   <exec_depend>rviz2</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>xacro</exec_depend>
 
   <test_depend>ament_cmake_pytest</test_depend>

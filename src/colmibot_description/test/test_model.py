@@ -186,6 +186,37 @@ def test_collision_geometry(robot):
         assert float(cylinder.get('length')) == pytest.approx(WHEEL_WIDTH)
 
 
+def test_mobile_collision_mode():
+    """C-007: collision_mode:=mobile cambia solo la colisión del chasis (ver SOURCE.md)."""
+    default = _robot()
+    mobile = ET.fromstring(xacro.process_file(MODEL, mappings={'collision_mode': 'mobile'}).toxml())
+    collisions = mobile.findall("link[@name='base_link']/collision")
+    assert [c.get('name') for c in collisions] == ['chassis_lower', 'chassis_upper', None, None]
+    # (centro z, largo, radio): fondo a 13.6 mm del suelo, 2 mm de holgura con las llantas.
+    expected = [(0.0078, 0.0484, 0.07905), (0.0846, 0.1052, 0.100)]
+    for collision, (z, length, radius) in zip(collisions, expected):
+        cylinder = collision.find('geometry/cylinder')
+        assert _origin(collision)[0] == pytest.approx([0.0, 0.0, z], abs=1e-9)
+        assert float(cylinder.get('length')) == pytest.approx(length, abs=1e-9)
+        assert float(cylinder.get('radius')) == pytest.approx(radius, abs=1e-9)
+    assert z - length / 2 == pytest.approx(WHEEL_RADIUS + 0.002)
+    for collision, (xyz, radius) in zip(collisions[2:], CASTERS):
+        assert _origin(collision)[0] == pytest.approx(list(xyz))
+        assert float(collision.find('geometry/sphere').get('radius')) == pytest.approx(radius)
+    for robot in (default, mobile):
+        link = robot.find("link[@name='base_link']")
+        for collision in link.findall('collision')[:-2]:
+            link.remove(collision)
+        for element in robot.iter():
+            element.tail = None
+            if element.text is not None and not element.text.strip():
+                element.text = None
+    assert ET.tostring(mobile) == ET.tostring(default)
+    bogus = subprocess.run(['xacro', MODEL, 'collision_mode:=bogus'], capture_output=True,
+                           text=True, timeout=60)
+    assert bogus.returncode != 0 and 'collision_mode' in bogus.stderr
+
+
 def test_collision_has_inertial(robot):
     for link in robot.findall('link'):
         has_collision = link.find('collision') is not None

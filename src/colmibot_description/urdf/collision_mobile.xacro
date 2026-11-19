@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+  Colisión del chasis para locomoción (collision_mode:=mobile). Añadido en C-007; no lo generan
+  las herramientas de Víctor. Ver SOURCE.md, sección "Divergencia local C-007".
+
+  El cuerpo del CAD (sin llantas ni casters) es un cilindro de r = 0.100 m entre z = -0.0164 y
+  0.1004 respecto a base_link, con muescas para las llantas en ±Y; encima solo está la cámara
+  (r <= 0.065, hasta z = 0.1372). Se representa con dos cilindros coaxiales en base_link:
+
+    inferior: del fondo del cuerpo (-0.0164, ≈13.6 mm sobre el suelo) hasta 2 mm sobre la llanta;
+              radio = cara interna de la llanta menos 2 mm, para no invadir las ruedas.
+    superior: de 2 mm sobre la llanta hasta la tapa de la envolvente de Víctor (0.1372);
+              radio = mitad del largo del chasis (0.100).
+
+  Radios y alturas salen de las mismas propiedades que posicionan las ruedas y la envolvente
+  (wheel_*, chassis_*). Solo el fondo es un literal medido en las mallas: z mínimo de
+  placas_laser.stl. Las esferas de los casters siguen en colmibot.urdf.xacro sin cambios.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- z mínimo del cuerpo sin llantas ni casters (placas_laser.stl), respecto a base_link -->
+  <xacro:property name="mobile_body_bottom_z" value="-0.0164"/>
+  <!-- Holgura entre las colisiones del chasis y la llanta, lateral y vertical -->
+  <xacro:property name="mobile_wheel_gap" value="0.002"/>
+
+  <!-- Sin "base_link" en los nombres: así <gazebo reference="base_link"> no les aplica su
+       superficie (sdformat solo la aplica a colisiones con el nombre por defecto). -->
+  <xacro:macro name="chassis_collision_mobile">
+    <xacro:property name="r_in"
+        value="${min(wheel_left_y, -wheel_right_y) - wheel_width / 2 - mobile_wheel_gap}"/>
+    <xacro:property name="z_split"
+        value="${max(wheel_left_z, wheel_right_z) + wheel_radius + mobile_wheel_gap}"/>
+    <xacro:property name="z_top" value="${chassis_z + chassis_height / 2}"/>
+    <collision name="chassis_lower">
+      <origin xyz="0 0 ${(mobile_body_bottom_z + z_split) / 2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${r_in}" length="${z_split - mobile_body_bottom_z}"/>
+      </geometry>
+    </collision>
+    <collision name="chassis_upper">
+      <origin xyz="0 0 ${(z_split + z_top) / 2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${chassis_length / 2}" length="${z_top - z_split}"/>
+      </geometry>
+    </collision>
+  </xacro:macro>
+
+</robot>

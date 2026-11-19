@@ -5,6 +5,9 @@
   Argumentos:
     use_meshes:=true   (por defecto) mallas STL exportadas del CAD (ver tools/prepare_meshes.py)
     use_meshes:=false  geometria simplificada (cajas/cilindros), no requiere mallas
+    collision_mode:=legacy  (por defecto) caja del chasis de Victor; toca el suelo (solo estacionario)
+    collision_mode:=mobile  dos cilindros sin contacto con el suelo ni con las llantas (C-007,
+                            urdf/collision_mobile.xacro; ver SOURCE.md)
 
   Arbol de frames:
     base_footprint -> base_link -> wheel_left_link / wheel_right_link
@@ -16,6 +19,11 @@
 
   <xacro:arg name="use_meshes" default="true"/>
   <xacro:property name="use_meshes" value="$(arg use_meshes)"/>
+  <xacro:arg name="collision_mode" default="legacy"/>
+  <xacro:property name="collision_mode" value="$(arg collision_mode)"/>
+  <xacro:if value="${collision_mode not in ('legacy', 'mobile')}">
+    ${xacro.fatal("collision_mode debe ser legacy o mobile, no '" + collision_mode + "'")}
+  </xacro:if>
 
   <xacro:include filename="$(find colmibot_description)/urdf/colmibot_params.xacro"/>
   <xacro:include filename="$(find colmibot_description)/urdf/materials.xacro"/>
@@ -26,6 +34,7 @@
     <!-- Sobrescribe medidas de colmibot_params.xacro y define body_mesh_links -->
     <xacro:include filename="$(find colmibot_description)/urdf/generated/colmibot_meshes.xacro"/>
   </xacro:if>
+  <xacro:include filename="$(find colmibot_description)/urdf/collision_mobile.xacro"/>
 
   <!-- ============ Base ============ -->
   <link name="base_footprint"/>
@@ -59,12 +68,17 @@
     </xacro:unless>
 
     <!-- Colisiones siempre simplificadas: mas ligeras para planeacion/simulacion -->
-    <collision>
-      <origin xyz="0 0 ${chassis_z}" rpy="0 0 0"/>
-      <geometry>
-        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
-      </geometry>
-    </collision>
+    <xacro:if value="${collision_mode == 'legacy'}">
+      <collision>
+        <origin xyz="0 0 ${chassis_z}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+      </collision>
+    </xacro:if>
+    <xacro:if value="${collision_mode == 'mobile'}">
+      <xacro:chassis_collision_mobile/>
+    </xacro:if>
     <collision>
       <origin xyz="${caster_x} 0 ${caster_radius - wheel_radius}" rpy="0 0 0"/>
       <geometry><sphere radius="${caster_radius}"/></geometry>

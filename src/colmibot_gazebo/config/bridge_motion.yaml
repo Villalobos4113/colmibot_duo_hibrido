@@ -1,0 +1,23 @@
+# ros_gz_bridge de locomoción SOLO simulada (C-007), nodo colmibot_motion_bridge.
+# /clock y /joint_states siguen en bridge_stationary.yaml (nodo colmibot_bridge), como en C-006.
+# Única entrada ROS->GZ: el Twist simulado. El nombre /colmibot_sim/cmd_vel evita que un /cmd_vel
+# genérico (teleop, joystick, hardware) llegue a Gazebo por accidente, y viceversa.
+- ros_topic_name: "/colmibot_sim/cmd_vel"
+  gz_topic_name: "/model/colmibot/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: ROS_TO_GZ
+
+# Odometría del DiffDrive (frame_id odom, child_frame_id base_footprint).
+- ros_topic_name: "/odom"
+  gz_topic_name: "/model/colmibot/odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "gz.msgs.Odometry"
+  direction: GZ_TO_ROS
+
+# Única autoridad de odom -> base_footprint. El resto del árbol lo publica robot_state_publisher.
+- ros_topic_name: "/tf"
+  gz_topic_name: "/model/colmibot/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS

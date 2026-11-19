@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+  COLMIBOT con locomoción diferencial SOLO en Gazebo Harmonic (C-007).
+
+  Reutiliza colmibot_sim.urdf.xacro (descripción de Víctor + JointStatePublisher + cámara
+  opcional) y le añade:
+    - collision_mode:=mobile por defecto (colisión del chasis sin contacto con el suelo);
+    - fricción nula en las dos esferas caster;
+    - gz::sim::systems::DiffDrive nativo de Harmonic, inspirado en el de Mingyar
+      (Mingyar2/colmibot_ws@0aed972) pero con radio y vía de las propiedades de Víctor.
+
+  Tópicos Gazebo del modelo (el puente ROS los fija en config/bridge_motion.yaml):
+    /model/colmibot/cmd_vel   (entrada, gz.msgs.Twist)
+    /model/colmibot/odometry  (salida, gz.msgs.Odometry)
+    /model/colmibot/tf        (salida, odom -> base_footprint, gz.msgs.Pose_V)
+
+  Límites de velocidad y aceleración: solo de demostración en simulación, no calibrados.
+-->
+<robot name="colmibot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Primera declaración gana: este valor se impone al legacy por defecto de la descripción -->
+  <xacro:arg name="collision_mode" default="mobile"/>
+
+  <xacro:include filename="$(find colmibot_gazebo)/urdf/colmibot_sim.urdf.xacro"/>
+
+  <!-- Casters como apoyos sin fricción (bolas locas). sdformat aplica esta superficie solo a
+       las colisiones de base_link con el nombre por defecto: las dos esferas caster. Las
+       colisiones chassis_lower/chassis_upper tienen nombre propio y conservan la fricción
+       por defecto, para que un contacto falso del chasis no quede oculto. Con
+       collision_mode:=legacy la caja tampoco tiene nombre y también quedaría sin fricción: ese
+       modo aquí solo sirve para inspección estática, no para ensayar movimiento. -->
+  <gazebo reference="base_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint>
+      <!-- Mismas propiedades que posicionan las ruedas: 0.17410 m y 0.030 m con mallas -->
+      <wheel_separation>${wheel_left_y - wheel_right_y}</wheel_separation>
+      <wheel_radius>${wheel_radius}</wheel_radius>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <topic>/model/colmibot/cmd_vel</topic>
+      <odom_topic>/model/colmibot/odometry</odom_topic>
+      <tf_topic>/model/colmibot/tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+      <max_linear_velocity>0.10</max_linear_velocity>
+      <min_linear_velocity>-0.10</min_linear_velocity>
+      <max_angular_velocity>0.60</max_angular_velocity>
+      <min_angular_velocity>-0.60</min_angular_velocity>
+      <max_linear_acceleration>0.25</max_linear_acceleration>
+      <min_linear_acceleration>-0.25</min_linear_acceleration>
+      <max_angular_acceleration>1.5</max_angular_acceleration>
+      <min_angular_acceleration>-1.5</min_angular_acceleration>
+    </plugin>
+  </gazebo>
+
+</robot>
